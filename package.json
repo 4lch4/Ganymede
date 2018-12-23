@@ -1,0 +1,19 @@
+{
+  "name": "ganymede",
+  "version": "0.1.0",
+  "description": "A module for working with the 2019 Schedule of the Overwatch League.",
+  "main": "ganymede.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alcha/Ganymede.git"
+  },
+  "author": "Alcha",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Alcha/Ganymede/issues"
+  },
+  "homepage": "https://github.com/Alcha/Ganymede#readme"
+}
