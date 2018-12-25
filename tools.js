@@ -2,6 +2,7 @@ const { join } = require('path')
 const dataPath = join(__dirname, 'assets')
 const logosPath = join(dataPath, 'images', 'logos')
 const scheduleDataPath = join(dataPath, '2019-01_Schedule.json')
+const scheduleData = require(scheduleDataPath)
 
 // #region Helper Data
 const teamNames = [
@@ -135,10 +136,10 @@ const getTeamShortName = team => {
  * version of the away/home team matches the given team name. Returns true or
  * false, is the team involved in this event?
  *
- * If you provide an **EventInfo** object, this function tests against the event
+ * If you provide a **DayInfo** object, this function tests against the event
  * object contained within which has the actual away/home names.
  *
- * @param {Event|EventInfo} event The event to test against.
+ * @param {Event|DayInfo} event The event to test against.
  * @param {String} teamName The team to look for.
  *
  * @returns {Boolean} True or false, is the given team involved in the given event?
@@ -157,7 +158,6 @@ const eventIncludesTeam = (event, teamName) => {
  * @param {String} teamName The name of the team you wish to retrieve.
  */
 const getTeamSchedule = async teamName => {
-  let scheduleData = require(scheduleDataPath)
   let out = []
 
   for (let day of scheduleData) {
@@ -172,6 +172,32 @@ const getTeamSchedule = async teamName => {
   }
 
   return out
+}
+
+/**
+ * Looks for an event on the given day/date and if one exists returns the full
+ * day object with events. If none exists for the requested date, undefined is
+ * returned.
+ *
+ * @param {String|Date} date The day to look for an event.
+ *
+ * @returns {DayInfo} The DayInfo object containing requested info, or undefined if no event occurs on the requested date.
+ */
+const getDaySchedule = date => {
+  if (typeof date !== 'string') {
+    try {
+      let month = date.getMonth().toString().padStart(2, '0')
+      let day = date.getDate().toString().padStart(2, '0')
+
+      date = `${date.getFullYear()}-${month}-${day}`
+    } catch (err) { console.error(err) }
+  }
+
+  for (let day of scheduleData) {
+    if (day.date === date) return day
+  }
+
+  return undefined
 }
 
 /**
@@ -274,6 +300,7 @@ module.exports.logosPath = logosPath
 module.exports.teamLogos = teamLogos
 module.exports.teamNames = teamNames
 module.exports.parseTeamArg = parseTeamArg
+module.exports.getDaySchedule = getDaySchedule
 module.exports.getTeamSchedule = getTeamSchedule
 module.exports.validateTeamArg = validateTeamArg
 module.exports.formatTeamOutput = formatTeamOutput
@@ -285,14 +312,14 @@ module.exports.validateInstructionArg = validateInstructionArg
 // #endregion Module Exports
 
 /**
- * @typedef {Object} EventInfo
- * @property {String} date
- * @property {Event} event
- */
-
-/**
  * @typedef {Object} Event
  * @prop {String} time
  * @prop {String} away
  * @prop {String} home
+ */
+
+/**
+ * @typedef {Object} DayInfo
+ * @prop {String} date The date of the events.
+ * @prop {Event[]} events An array of events that occur on this date.
  */
