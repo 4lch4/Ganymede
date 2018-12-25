@@ -4,6 +4,7 @@
   "description": "A module for working with the 2019 Schedule of the Overwatch League.",
   "main": "ganymede.js",
   "scripts": {
+    "start": "node ./ganymede.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
