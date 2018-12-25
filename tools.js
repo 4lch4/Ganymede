@@ -130,22 +130,39 @@ const getTeamShortName = team => {
 }
 
 /**
+ * Determines if the given team name is included the given event. Checks against
+ * the home and away team to see if they are an exact match or if the short
+ * version of the away/home team matches the given team name. Returns true or
+ * false, is the team involved in this event?
+ *
+ * If you provide an **EventInfo** object, this function tests against the event
+ * object contained within which has the actual away/home names.
+ *
+ * @param {Event|EventInfo} event The event to test against.
+ * @param {String} teamName The team to look for.
+ *
+ * @returns {Boolean} True or false, is the given team involved in the given event?
+ */
+const eventIncludesTeam = (event, teamName) => {
+  if (event.event !== undefined) event = event.event
+  return event.away === teamName ||
+          event.home === teamName ||
+          getTeamShortName(event.away) === teamName ||
+          getTeamShortName(event.home) === teamName
+}
+
+/**
  * Retrieves the schedule for a given team over the 2019 schedule.
  *
- * @param {String} team The name of the team you wish to retrieve.
+ * @param {String} teamName The name of the team you wish to retrieve.
  */
-const getTeamSchedule = async team => {
+const getTeamSchedule = async teamName => {
   let scheduleData = require(scheduleDataPath)
   let out = []
 
   for (let day of scheduleData) {
     for (let event of day.events) {
-      if (event.away === team) {
-        out.push({
-          date: day.date,
-          event: event
-        })
-      } else if (event.home === team) {
+      if (eventIncludesTeam(event, teamName)) {
         out.push({
           date: day.date,
           event: event
@@ -158,7 +175,7 @@ const getTeamSchedule = async team => {
 }
 
 /**
- * Formats the team names for output as a list.
+ * Formats the stored team names for output as a numbered list.
  *
  * @returns {String}
  */
@@ -266,3 +283,16 @@ module.exports.parseInstructionArg = parseInstructionArg
 module.exports.validInstructionArgs = validInstructionArgs
 module.exports.validateInstructionArg = validateInstructionArg
 // #endregion Module Exports
+
+/**
+ * @typedef {Object} EventInfo
+ * @property {String} date
+ * @property {Event} event
+ */
+
+/**
+ * @typedef {Object} Event
+ * @prop {String} time
+ * @prop {String} away
+ * @prop {String} home
+ */
