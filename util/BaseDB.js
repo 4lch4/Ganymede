@@ -113,6 +113,13 @@ const teamLogos = {
 }
 // #endregion Helper Data
 
+const getDbChoice = () => {
+  try {
+    require('mongoose')
+    return 'mongoose'
+  } catch (err) { return 'file' }
+}
+
 class Base {
   // #region Static Constants
   static get teamLogos () {
@@ -127,9 +134,24 @@ class Base {
   // #region Functions to Override
   getTeamSchedule () {}
   getDaySchedule () {}
+  getScheduledDates () {}
   // #endregion Functions to Override
 
   // #region Helper Functions
+  /**
+   * Determines the currently installed image processor. Is it Canvas or Jimp?
+   * If either one is found, the name is returned as a String, otherwise
+   * undefined is returned.
+   *
+   * @returns {String} `mongoose` or `file`
+   */
+  getDbChoice () {
+    try {
+      require('mongoose')
+      return 'mongoose'
+    } catch (err) { return 'file' }
+  }
+
   /**
    * Formats the stored team names for output as a numbered list.
    *
