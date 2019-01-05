@@ -2,3 +2,7 @@
 node_modules/
 
 shrinkwrap\.yaml
+
+package-lock\.json
+
+util/config\.json
