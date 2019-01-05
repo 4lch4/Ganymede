@@ -11,6 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/Alcha/Ganymede.git"
   },
+  "icon": "./assets/img/icon.png",
   "author": "Alcha",
   "license": "MIT",
   "bugs": {
