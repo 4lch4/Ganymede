@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Alcha/Ganymede#readme",
   "dependencies": {
-    "fs-extra": "^7.0.1"
+    "fs-extra": "^8.0.0"
   },
   "optionalDependencies": {
     "mongoose": "^5.4.1"
